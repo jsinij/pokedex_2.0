@@ -667,22 +667,23 @@ body {
 
 .album-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 👈 5 columnas */
-  gap: 10px;
-  min-height: 420px; /* ~3 filas (depende de alto de .album-card) */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 16px;                              
+  min-height: 720px;                    
 }
 
 .album-card {
   background: var(--navy);
   border: 4px solid #000;
-  border-radius: 10px;
-  padding: 12px;
+  border-radius: 12px;
+  padding: 16px;
   display: grid;
-  gap: 8px;
+  gap: 10px;
   justify-items: center;
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
-  min-height: 140px; /* un pelín más alta para meter sprite + info */
+  min-height: 220px;                      /* ⬅️ más alta */
 }
+
 
 .album-card.empty {
   opacity: 0.25;
@@ -711,8 +712,8 @@ body {
 }
 
 .album-sprite {
-  width: 72px;
-  height: 72px;
+  width: 128px;                         
+  height: 128px;
   object-fit: contain;
   image-rendering: pixelated;
 }
@@ -722,17 +723,24 @@ body {
 }
 
 /* ===== Responsive ===== */
+
+/* Desktop amplio: puedes mantener el zoom global en el base:
+   .pokedex-container { transform: scale(1.12); transform-origin: top left; } */
+
+/* ≤1200px: apilamos y quitamos el zoom */
 @media (max-width: 1200px) {
   .pokedex-container {
     flex-direction: column;
     align-items: center;
-    transform: none;
+    transform: none;            /* ← sin zoom desde aquí */
   }
   .evolution-panel {
     width: 100%;
     max-width: 500px;
   }
 }
+
+/* ≤1024px: ajuste de ancho/espaciado */
 @media (max-width: 1024px) {
   .pokedex {
     width: min(900px, 96vw);
@@ -740,20 +748,52 @@ body {
     padding: 14px;
   }
 }
+
+/* ≤768px: 1 columna, sin altura fija y keypad visible */
 @media (max-width: 768px) {
   .layout {
     padding: 1rem;
   }
+
+  .pokedex-container {
+    transform: none;          
+  }
+
   .pokedex {
     width: min(600px, 100vw);
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Pokédex en una sola columna */
     gap: 12px;
     padding: 12px;
+
+    /* clave para que no “corte” el teclado dentro */
+    max-height: none;           /* ← elimina el tope de 98vh */
+    overflow: visible;          /* ← no recorta el contenido */
   }
+
   .evolution-panel {
     width: 100%;
   }
+
   .evo {
     min-height: 300px;
+  }
+
+  .keypad {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    background: var(--navy);
+    padding-top: 6px;
+  }
+  .album-grid {
+    grid-template-columns: repeat(2, 1fr);
+    min-height: auto;
+  }
+  .album-card {
+    min-height: 200px;
+  }
+  .album-sprite {
+    width: 112px;
+    height: 112px;
   }
 }

@@ -2,32 +2,35 @@ import { useMemo, useState } from 'react';
 import { useAlbumPage } from '../hooks/useAlbumPage';
 import TypeBadge from './TypeBadge';
 
-// Total de pokémon en la Pokédex (lo usamos para paginar)
+// Total de pokémon en la Pokédex (hasta ahora)
 const TOTAL = 1025;
-// Queremos 5x3 cartas por página
-const PAGE_SIZE = 15;
-// Número total de páginas calculado a partir del total
+
+// 3x3 cartas por página
+const PAGE_SIZE = 9;
+
+// Cantidad total de páginas que vamos a recorrer
 const TOTAL_PAGES = Math.ceil(TOTAL / PAGE_SIZE);
 
 export default function Album() {
-  // Página actual (empezamos en 1 para que sea más “humano”)
+  // Página actual (empieza en 1 porque es más “humano” para mostrar)
   const [page, setPage] = useState(1);
-  // Offset para pedir los datos del backend/Hook (0, 15, 30, …)
+
+  // De aquí sale desde qué índice pedir en la API
   const offset = (page - 1) * PAGE_SIZE;
 
-  // Traemos la “página” actual del álbum: nombres, tipos y sprite
+  // Hook que trae la “página” del álbum (nombres, tipos y sprites)
   const { items, loading, error } = useAlbumPage(offset, PAGE_SIZE);
 
-  // Habilitamos/deshabilitamos flechas según la página
+  // Habilitamos/deshabilitamos las flechas según la página actual
   const canPrev = page > 1;
   const canNext = page < TOTAL_PAGES;
 
-  // Navegación simple: si puedo, voy una página atrás/adelante
+  // Handlers simples para navegar
   const prev = () => canPrev && setPage((p) => p - 1);
   const next = () => canNext && setPage((p) => p + 1);
 
-  // Si la última página viene incompleta, rellenamos con “huecos”
-  // para que la grilla siempre se vea 5x3
+  // En la última página puede venir menos de 9 pokes.
+  // Con esto “rellenamos” con nulls para completar el grid 3x3
   const paddedItems = useMemo(() => {
     const arr = items ?? [];
     const extra = PAGE_SIZE - arr.length;
@@ -38,7 +41,7 @@ export default function Album() {
 
   return (
     <div className="album-container">
-      {/* Cabecera del álbum: título y flechas de navegación */}
+      {/* Header con flechas y título. Nada raro aquí. */}
       <div className="album-header">
         <button
           className="album-arrow"
@@ -48,7 +51,9 @@ export default function Album() {
         >
           ◀
         </button>
+
         <div className="album-title">Álbum Pokédex</div>
+
         <button
           className="album-arrow"
           onClick={next}
@@ -59,29 +64,35 @@ export default function Album() {
         </button>
       </div>
 
-      {/* Indicador de página actual */}
+      {/* Indicador de “Página X / Y” para ubicar al usuario */}
       <div className="album-subtitle">
         Página {page} / {TOTAL_PAGES}
       </div>
 
-      {/* Grilla 5x3: estados de carga/error y render de cartas */}
+      {/* La grilla 3x3 (definida en CSS). Muestra estados de carga/err */}
       <div className="album-grid">
         {loading && <div className="album-loading">Cargando…</div>}
         {error && <div className="album-error">⚠ {error}</div>}
 
+        {/* Cuando hay datos, pintamos cada carta.
+            Si un slot es null (padded), renderizamos una carta vacía
+            para mantener la cuadrícula bonita. */}
         {!loading &&
           !error &&
           paddedItems.map((it, idx) =>
             it ? (
-              // Carta de pokémon con sprite, nombre y chips de tipos
               <div className="album-card" key={it.name}>
+                {/* Sprite grandecito. Si no hay, un placeholder gris. */}
                 {it.sprite ? (
                   <img className="album-sprite" src={it.sprite} alt={it.name} />
                 ) : (
-                  // Si no hay sprite, mostramos un bloque placeholder
                   <div className="album-sprite placeholder" />
                 )}
+
+                {/* Nombre en mayúsculas por estilo “retro” */}
                 <div className="album-name">{it.name}</div>
+
+                {/* Badges de tipos (usa el mismo componente que en la pokédex) */}
                 <div className="album-types">
                   {it.types.map((t) => (
                     <TypeBadge key={t} type={t} />
@@ -89,7 +100,7 @@ export default function Album() {
                 </div>
               </div>
             ) : (
-              // “Hueco” visual para completar la grilla en la última página
+              // Slot vacío para completar las 9 cartas
               <div className="album-card empty" key={`empty-${idx}`} />
             )
           )}
