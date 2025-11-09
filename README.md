@@ -1,6 +1,6 @@
 # Pokedex 2.0
 ## Desarrollado por: Juan Estevan Sinitave
----
+
 Aplicación desarrollada con React + TypeScript, inspirada en la estética retro de una Pokédex clásica.
 Permite consultar información de Pokémon por nombre o número en la Pokédex, y navegar entre dos vistas interactivas:
 
@@ -8,7 +8,7 @@ Permite consultar información de Pokémon por nombre o número en la Pokédex, 
 - Vista Álbum: organiza todos los Pokémon en un formato de tarjetas (5x3 por página), mostrando su nombre, tipo e imagen oficial.
 Puedes desplazarte entre páginas con flechas laterales.
 ---
-Funcionalidades principales
+### Funcionalidades principales
 
 - Búsqueda por nombre o número de Pokédex.
 
