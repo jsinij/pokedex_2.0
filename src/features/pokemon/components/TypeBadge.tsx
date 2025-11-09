@@ -1,4 +1,3 @@
-import React from 'react';
 import './type.css';
 
 /** Chip de tipo: solo muestra el nombre capitalizado y aplica el color. */

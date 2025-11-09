@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePokemon } from '../hooks/usePokemon';
 import Display from './Display';
 import Keypad from './Keypad';
