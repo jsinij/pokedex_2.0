@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAlbumPage } from '../hooks/useAlbumPage';
 import TypeBadge from './TypeBadge';
 

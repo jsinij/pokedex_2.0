@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEvolutionChain } from '../hooks/useEvolutionChain';
 import type { EvoStage } from '../hooks/useEvolutionChain';
 

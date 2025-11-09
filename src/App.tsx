@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Pokedex from './features/pokemon/components/Pokedex';
 import EvolutionChain from './features/pokemon/components/EvolutionChain';
 import Album from './features/pokemon/components/Album';

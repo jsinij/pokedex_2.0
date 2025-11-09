@@ -1,4 +1,3 @@
-import React from 'react';
 import TypeBadge from './TypeBadge';
 
 type Props = {
